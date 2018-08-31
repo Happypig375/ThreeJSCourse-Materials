@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>MUSL2361 - Lab05</title>
+
+
+<style type="text/css">
+body {
+  font-family: Helvetica, arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: white;
+  padding: 30px; }
+
+body > *:first-child {
+  margin-top: 0 !important; }
+body > *:last-child {
+  margin-bottom: 0 !important; }
+
+a {
+  color: #4183C4; }
+a.absent {
+  color: #cc0000; }
+a.anchor {
+  display: block;
+  padding-left: 30px;
+  margin-left: -30px;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0; }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  cursor: text;
+  position: relative; }
+
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor {
+  background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA09pVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMy1jMDExIDY2LjE0NTY2MSwgMjAxMi8wMi8wNi0xNDo1NjoyNyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNiAoMTMuMCAyMDEyMDMwNS5tLjQxNSAyMDEyLzAzLzA1OjIxOjAwOjAwKSAgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUM2NjlDQjI4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUM2NjlDQjM4ODBGMTFFMTg1ODlEODNERDJBRjUwQTQiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5QzY2OUNCMDg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5QzY2OUNCMTg4MEYxMUUxODU4OUQ4M0REMkFGNTBBNCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PsQhXeAAAABfSURBVHjaYvz//z8DJYCRUgMYQAbAMBQIAvEqkBQWXI6sHqwHiwG70TTBxGaiWwjCTGgOUgJiF1J8wMRAIUA34B4Q76HUBelAfJYSA0CuMIEaRP8wGIkGMA54bgQIMACAmkXJi0hKJQAAAABJRU5ErkJggg==) no-repeat 10px center;
+  text-decoration: none; }
+
+h1 tt, h1 code {
+  font-size: inherit; }
+
+h2 tt, h2 code {
+  font-size: inherit; }
+
+h3 tt, h3 code {
+  font-size: inherit; }
+
+h4 tt, h4 code {
+  font-size: inherit; }
+
+h5 tt, h5 code {
+  font-size: inherit; }
+
+h6 tt, h6 code {
+  font-size: inherit; }
+
+h1 {
+  font-size: 28px;
+  color: black; }
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #cccccc;
+  color: black; }
+
+h3 {
+  font-size: 18px; }
+
+h4 {
+  font-size: 16px; }
+
+h5 {
+  font-size: 14px; }
+
+h6 {
+  color: #777777;
+  font-size: 14px; }
+
+p, blockquote, ul, ol, dl, li, table, pre {
+  margin: 15px 0; }
+
+hr {
+  background: transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;
+  border: 0 none;
+  color: #cccccc;
+  height: 4px;
+  padding: 0;
+}
+
+body > h2:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+body > h1:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+  body > h1:first-child + h2 {
+    margin-top: 0;
+    padding-top: 0; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+  margin-top: 0;
+  padding-top: 0; }
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0; }
+
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p {
+  margin-top: 0; }
+
+li p.first {
+  display: inline-block; }
+li {
+  margin: 0; }
+ul, ol {
+  padding-left: 30px; }
+
+ul :first-child, ol :first-child {
+  margin-top: 0; }
+
+dl {
+  padding: 0; }
+  dl dt {
+    font-size: 14px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 0;
+    margin: 15px 0 5px; }
+    dl dt:first-child {
+      padding: 0; }
+    dl dt > :first-child {
+      margin-top: 0; }
+    dl dt > :last-child {
+      margin-bottom: 0; }
+  dl dd {
+    margin: 0 0 15px;
+    padding: 0 15px; }
+    dl dd > :first-child {
+      margin-top: 0; }
+    dl dd > :last-child {
+      margin-bottom: 0; }
+
+blockquote {
+  border-left: 4px solid #dddddd;
+  padding: 0 15px;
+  color: #777777; }
+  blockquote > :first-child {
+    margin-top: 0; }
+  blockquote > :last-child {
+    margin-bottom: 0; }
+
+table {
+  padding: 0;border-collapse: collapse; }
+  table tr {
+    border-top: 1px solid #cccccc;
+    background-color: white;
+    margin: 0;
+    padding: 0; }
+    table tr:nth-child(2n) {
+      background-color: #f8f8f8; }
+    table tr th {
+      font-weight: bold;
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr td {
+      border: 1px solid #cccccc;
+      margin: 0;
+      padding: 6px 13px; }
+    table tr th :first-child, table tr td :first-child {
+      margin-top: 0; }
+    table tr th :last-child, table tr td :last-child {
+      margin-bottom: 0; }
+
+img {
+  max-width: 100%; }
+
+span.frame {
+  display: block;
+  overflow: hidden; }
+  span.frame > span {
+    border: 1px solid #dddddd;
+    display: block;
+    float: left;
+    overflow: hidden;
+    margin: 13px 0 0;
+    padding: 7px;
+    width: auto; }
+  span.frame span img {
+    display: block;
+    float: left; }
+  span.frame span span {
+    clear: both;
+    color: #333333;
+    display: block;
+    padding: 5px 0 0; }
+span.align-center {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-center > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: center; }
+  span.align-center span img {
+    margin: 0 auto;
+    text-align: center; }
+span.align-right {
+  display: block;
+  overflow: hidden;
+  clear: both; }
+  span.align-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px 0 0;
+    text-align: right; }
+  span.align-right span img {
+    margin: 0;
+    text-align: right; }
+span.float-left {
+  display: block;
+  margin-right: 13px;
+  overflow: hidden;
+  float: left; }
+  span.float-left span {
+    margin: 13px 0 0; }
+span.float-right {
+  display: block;
+  margin-left: 13px;
+  overflow: hidden;
+  float: right; }
+  span.float-right > span {
+    display: block;
+    overflow: hidden;
+    margin: 13px auto 0;
+    text-align: right; }
+
+code, tt {
+  margin: 0 2px;
+  padding: 0 5px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px; }
+
+pre code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent; }
+
+.highlight pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px; }
+  pre code, pre tt {
+    background-color: transparent;
+    border: none; }
+
+sup {
+    font-size: 0.83em;
+    vertical-align: super;
+    line-height: 0;
+}
+* {
+	-webkit-print-color-adjust: exact;
+}
+@media screen and (min-width: 914px) {
+    body {
+        width: 854px;
+        margin:0 auto;
+    }
+}
+@media print {
+	table, pre {
+		page-break-inside: avoid;
+	}
+	pre {
+		word-wrap: break-word;
+	}
+}
+</style>
+
+<style type="text/css">
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+	color: black;
+	background: none;
+	text-shadow: 0 1px white;
+	font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	line-height: 1.5;
+
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+	tab-size: 4;
+
+	-webkit-hyphens: none;
+	-moz-hyphens: none;
+	-ms-hyphens: none;
+	hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+	text-shadow: none;
+	background: #b3d4fc;
+}
+
+@media print {
+	code[class*="language-"],
+	pre[class*="language-"] {
+		text-shadow: none;
+	}
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+	padding: 1em;
+	margin: .5em 0;
+	overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+	background: #f5f2f0;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+	padding: .1em;
+	border-radius: .3em;
+	white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+	color: slategray;
+}
+
+.token.punctuation {
+	color: #999;
+}
+
+.namespace {
+	opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+	color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+	color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+	color: #a67f59;
+	background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+	color: #07a;
+}
+
+.token.function {
+	color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+	color: #e90;
+}
+
+.token.important,
+.token.bold {
+	font-weight: bold;
+}
+.token.italic {
+	font-style: italic;
+}
+
+.token.entity {
+	cursor: help;
+}
+</style>
+
+<style type="text/css">
+pre.line-numbers {
+	position: relative;
+	padding-left: 3.8em;
+	counter-reset: linenumber;
+}
+
+pre.line-numbers > code {
+	position: relative;
+}
+
+.line-numbers .line-numbers-rows {
+	position: absolute;
+	pointer-events: none;
+	top: 0;
+	font-size: 100%;
+	left: -3.8em;
+	width: 3em; /* works for line-numbers below 1000 lines */
+	letter-spacing: -1px;
+	border-right: 1px solid #999;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+}
+
+	.line-numbers-rows > span {
+		pointer-events: none;
+		display: block;
+		counter-increment: linenumber;
+	}
+
+		.line-numbers-rows > span:before {
+			content: counter(linenumber);
+			color: #999;
+			display: block;
+			padding-right: 0.8em;
+			text-align: right;
+		}
+</style>
+
+
+</head>
+
+<body>
+
+<p><img src="https://cslinux0.comp.hkbu.edu.hk/%7Emtchoy/Logo_org_jpg.jpg" alt=""></p>
+
+<h1 id="toc_0">MUSL2361 - VR Adventure</h1>
+
+<h2 id="toc_1">Lab 5.1 - Shadow Clone Technique</h2>
+
+<p>We&#39;ve learnt how to develop <strong>fragment shaders</strong> to provide some visual effects. Today, I&#39;m going to show you the <strong>Shadow Clone Technique</strong>. The shadow clone technique isn&#39;t a skill in computer graphics, instead it is a symbolic jutsu (忍術) in the Naruto manga series.</p>
+
+<p><img src="http://cslinux0.comp.hkbu.edu.hk/%7Emtchoy/Screen%20Shot%202018-02-19%20at%2010.47.56%20PM.png" alt=""></p>
+
+<p>To produce the above CG scene, you will have to develop a fragment shader which implements</p>
+
+<ul>
+<li>Phong lighting model,</li>
+<li>Toon shading, and</li>
+<li>Texture mapping.</li>
+</ul>
+
+<p>On top of it, you will also have to:</p>
+
+<ul>
+<li><strong>apply custom shaders to model</strong> that involves multiple meshes</li>
+<li>construct a <strong>parametric plane</strong></li>
+<li>perform <strong>ray casting</strong> to pinpoint a location in the 3D scene, and</li>
+<li>cast <strong>shadow</strong>.</li>
+</ul>
+
+<!--
+
+Before I pass the lab to Edmond, i'd like to complete the shader exercises. Previously, we rely on the **Shdr** online shader editor to develop our **vertex** and **fragment** shaders. It's time to show you how to use **custom shaders** in our THREE.js applications.
+-->
+
+<!--Since **Naruto is the World's Number 1** (<https://goo.gl/Kd2qI2>), i'd like to end my part with a famous Naruto's skill.
+
+Kage Bunshin no jutsu
+-->
+
+<h3 id="toc_2">Loading the Model</h3>
+
+<p>A zip file containing all required files for today has been released on our course room. Please grab yourself a copy and extract it.</p>
+
+<p>Here&#39;s the template we will use, and please name it as <code>cg05a.html</code>.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+
+&lt;head&gt;
+    &lt;title&gt;Kage Bunshin no Jutsu (影分身の術)&lt;/title&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;style&gt;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/three.js/95/three.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;http://threejs.org/examples/js/loaders/MTLLoader.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;http://threejs.org/examples/js/loaders/OBJLoader.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;http://threejs.org/examples/js/controls/TrackballControls.js&quot;&gt;&lt;/script&gt;
+
+    &lt;script&gt;
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x7ec0ee);
+
+        var aspect = window.innerWidth / window.innerHeight;
+        var camera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        controls = new THREE.TrackballControls(camera);
+
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // MORE Javascript will go here.
+
+        camera.position.z = 500;
+
+        var render = function () {
+            requestAnimationFrame(render);
+
+            controls.update();
+            renderer.render(scene, camera);
+        };
+
+        render();
+
+    &lt;/script&gt;
+
+&lt;/body&gt;
+
+&lt;/html&gt;</code></pre></div>
+
+<p>Pretty standard, we&#39;ve got a scene with <strong>trackball control</strong> binded to the camera.</p>
+
+<p>Then, we load the <strong>Naruto obj model</strong> as usual: </p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var naruto;
+
+var mtlLoader = new THREE.MTLLoader();
+mtlLoader.setPath(&#39;obj/86b61s2onq-Naruto/&#39;);
+mtlLoader.load(&#39;2nrtbod1out.mtl&#39;, function (materials) {
+
+    materials.preload();
+
+    var objLoader = new THREE.OBJLoader();
+    objLoader.setMaterials(materials);
+    objLoader.setPath(&#39;obj/86b61s2onq-Naruto/&#39;);
+    objLoader.load(&#39;2nrtbod1out.obj&#39;, function (object) {
+
+        object.position.set(0, -100, 300);
+        object.rotation.set(-Math.PI / 2, 0, 0);
+        scene.add(object);
+        naruto = object;
+
+    });
+
+});</code></pre></div>
+
+<p>Naruto is black as there&#39;s no light. Let&#39;s add a <strong>directional light</strong> today. By default, a directional light will <strong>look at the origin</strong>. Thus, we can set its direction by specifying its position.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var directionalLight = new THREE.DirectionalLight(0xffffff, 0.5);
+directionalLight.position.set(200, 200, 200);
+scene.add(directionalLight);</code></pre></div>
+
+<p><img src="http://cslinux0.comp.hkbu.edu.hk/%7Emtchoy/Screen%20Shot%202018-02-20%20at%2012.01.52%20AM.png" alt="">     </p>
+
+<p>The model is shinny and doesn&#39;t give the correct manga feeling. That&#39;s why we  have to implement our <strong>own shaders</strong> to produce that visual effect. </p>
+
+<h3 id="toc_3">Prepare the Custom Shaders</h3>
+
+<p>There are many ways to load custom shaders in Three.js, as being discussed in 
+<a href="https://stackoverflow.com/questions/5878703/webgl-is-there-an-alternative-to-embedding-shaders-in-html">https://stackoverflow.com/questions/5878703/webgl-is-there-an-alternative-to-embedding-shaders-in-html</a> and <a href="https://stackoverflow.com/questions/14219947/why-do-shaders-have-to-be-in-html-file-for-webgl-program">https://stackoverflow.com/questions/14219947/why-do-shaders-have-to-be-in-html-file-for-webgl-program</a>. </p>
+
+<p>One approach is to put the glsl shader code directly inside the same HTML document. This approach doesn&#39;t require the use of web server but the code is more messy and difficult to follow. In this course, you are advised to <strong>save the codes seperately and use <code>FileLoader</code> load the shader files</strong>.</p>
+
+<p>Construct a pair of files - <code>cg05_vertex.glsl</code> and <code>cg05_fragment.glsl</code>.</p>
+
+<p><code>cg05_vertex.glsl</code>:</p>
+
+<div><pre class="line-numbers"><code class="language-glsl">precision highp float;
+// attribute vec3 position;
+// attribute vec3 normal;
+// uniform mat3 normalMatrix;
+// uniform mat4 modelViewMatrix;
+// uniform mat4 projectionMatrix;
+varying vec3 fNormal;
+varying vec3 fPosition;
+
+void main()
+{
+  fNormal = normalize(normalMatrix * normal);
+  vec4 pos = modelViewMatrix * vec4(position, 1.0);
+  fPosition = pos.xyz;
+  gl_Position = projectionMatrix * pos;
+}</code></pre></div>
+
+<p>Line 2 - 8 declare the input and output values of this vertex shader.</p>
+
+<ul>
+<li><p><code>attribute</code> are the input values, per vertex. Thus, given a 3D cube model, there should be 8 vertices, meaning 8 different positions, together with 8 different corresponding normals.</p></li>
+<li><p><code>vec3</code> represents a vector with 3 components. We also have vector types <code>vec4</code> and <code>vec2</code>. </p></li>
+<li><p><code>uniform</code> represents a single input value, expects to be used by all vertices of the incoming model. </p></li>
+<li><p><code>mat3</code> and <code>mat4</code> defines the types for 3 x 3 and 4 x 4 matrices respectiviely.</p></li>
+<li><p><code>varying</code> is the output of the <strong>vertex</strong> shader.</p></li>
+</ul>
+
+<p><code>cg05_fragment.glsl</code>:</p>
+
+<div><pre class="line-numbers"><code class="language-glsl">precision highp float;
+uniform float time;
+uniform vec2 resolution;
+varying vec3 fPosition;
+varying vec3 fNormal;
+
+void main()
+{
+  gl_FragColor = vec4(fNormal, 1.0);
+}</code></pre></div>
+
+<p>Here, we simply start with the <strong>default shaders</strong> from the <strong>Shdr</strong> online editor. Some inputs are commented as they have already been defined under Three.js.</p>
+
+<h3 id="toc_4">Using the Custom Shaders in Three.js</h3>
+
+<p>Simply use the built-in <code>FileLoader</code> to load the <strong>custom shaders</strong> and then reference them with variables <code>vShader</code> and <code>fShader</code>. Here&#39;s the required code segment, put it in our main program.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var vShader, fShader;
+var shaderLoader = new THREE.FileLoader();
+
+shaderLoader.load(&#39;cg05_vertex.glsl&#39;, function (data) {
+    vShader = data;
+});
+
+shaderLoader.load(&#39;cg05_fragment.glsl&#39;, function (data) {
+    fShader = data;
+});</code></pre></div>
+
+<p>So far, we&#39;ve been using the <code>MeshLambertMaterial</code> and <code>MeshPhongMaterial</code> to give object/mesh realistic visual behaviour. To use our own shaders, we will use <code>ShaderMaterial</code> instead. </p>
+
+<div><pre class="line-numbers"><code class="language-javascript">object.traverse(function (child) {
+    if (child instanceof THREE.Mesh) {
+
+        child.material = new THREE.ShaderMaterial({
+            vertexShader: vShader,
+            fragmentShader: fShader
+        });
+
+    }
+});</code></pre></div>
+
+<p>Now, reload your page and Naruto should be mainly in <strong>blue</strong> (Normals pointing outwards). This implies we loaded the shaders successfully.</p>
+
+<p><img src="http://cslinux0.comp.hkbu.edu.hk/%7Emtchoy/Screen%20Shot%202018-02-20%20at%202.22.11%20AM.png" alt=""></p>
+
+<p>Our Naruto 3D model is complicated and involves <strong>8 meshes</strong>. You can always <code>console.log</code> to display the mesh array. The above code segment basically  assigns each mesh the same pair of shaders.</p>
+
+<h3 id="toc_5">Texture Mappng with Shaders.</h3>
+
+<p>We&#39;d like to show the original texture on our Naruto model. This could be done by performing <strong>texture mapping</strong> in the <strong>fragment shader</strong>.</p>
+
+<p>In our main program, replace the previous code segment with the following:</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">object.traverse(function (child) {
+    if (child instanceof THREE.Mesh) {
+
+        child.material = new THREE.ShaderMaterial({
+            uniforms: {
+                lightSrc: { type: &quot;v3&quot;, value: directionalLight.position },
+                texture: { type: &quot;t&quot;, value: child.material.map }
+            },
+            vertexShader: vShader,
+            fragmentShader: fShader
+        });
+        
+    }
+});</code></pre></div>
+
+<!--Among the **8 meshes** in the model, there are only **3 different materials** needed to be created. The 3 materials are for the **Naruto body**, **eyes** and the **tongues of his headband**. These 3 materials are being created in the `else` part of the above program segment. Currently, the 3 materials basically use different texture files: `ntxr001.png` for the **body** and `ntxr005.png` for the **eyes**. Line 17 - 20 selects the correct texture for these materials.-->
+
+<p>The <strong>texture of each mesh</strong> has already been added to the corresponding <code>material.map</code> attribute. This information is then passed to the shaders as a <strong>uniform attribute</strong> in line 7. In fact, the information about the light source is also provided here. This is needed to perform <strong>Phong lighting model</strong> later.</p>
+
+<p>We can <strong>add as many uniforms</strong> as we like, simply by expanding line 5 - 8. Type <code>t</code> corresponds to the <code>sampler2D</code> type in the shaders. More about the <strong>ShaderMaterial</strong> could be found here: <a href="http://threejs.org/docs/#Reference/Materials/ShaderMaterial">http://threejs.org/docs/#Reference/Materials/ShaderMaterial</a></p>
+
+<p>For each object, we can assign a pair of <code>uv</code> values to each vertex. <strong>Each value is between 0 and 1</strong>. These values will be used in texture mapping. In the vertex shader, we simply have to pass the <code>uv</code> values to the fragment shaders. Thus, modify the vertex shader as follows</p>
+
+<div><pre class="line-numbers"><code class="language-glsl">precision highp float;
+// attribute vec3 position;
+// attribute vec3 normal;
+// uniform mat3 normalMatrix;
+// uniform mat4 modelViewMatrix;
+// uniform mat4 projectionMatrix;
+varying vec3 fNormal;
+varying vec3 fPosition;
+varying vec2 vUv;
+
+void main()
+{
+  fNormal = normalize(normalMatrix * normal);
+  vec4 pos = modelViewMatrix * vec4(position, 1.0);
+  fPosition = pos.xyz;
+  vUv = uv;
+  gl_Position = projectionMatrix * pos;
+}</code></pre></div>
+
+<p>Here, we can a new <code>varying</code> output <code>vUv</code>, which is simply the incoming <code>uv</code> values (check <strong>line 16</strong>).</p>
+
+<p>In the fragment shader, modify it as follows.</p>
+
+<div><pre class="line-numbers"><code class="language-glsl">precision highp float;
+uniform float time;
+uniform vec2 resolution;
+varying vec3 fPosition;
+varying vec3 fNormal;
+varying vec2 vUv;
+
+uniform sampler2D texture;
+
+void main()
+{
+  gl_FragColor = texture2D(texture, vUv);
+  // gl_FragColor = vec4(fNormal, 1.0);
+}</code></pre></div>
+
+<p>From line 8, we obtain the texture from the main program. In line 12, the <code>texture2D()</code> function would perform the actual texture mapping, which reads a texel from the <code>texture</code> according to the current <code>vUv</code> value.</p>
+
+<p><img src="http://cslinux0.comp.hkbu.edu.hk/%7Emtchoy/Screen%20Shot%202018-02-20%20at%2012.02.59%20PM.png" alt=""></p>
+
+<p><strong>Exercise:</strong> Modify your fragment shader to implement <strong>Phong Lighting</strong> and <strong>Toon Shading</strong>.</p>
+
+<p><img src="http://cslinux0.comp.hkbu.edu.hk/%7Emtchoy/Screen%20Shot%202018-02-20%20at%204.01.36%20PM.png" alt=""></p>
+
+<h2 id="toc_6">The Terrain</h2>
+
+<p>We&#39;ll start with a <strong>basic flat floor</strong>. To create a <strong>plane geometry</strong>:</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var geometry = new THREE.PlaneGeometry(2000, 2000, 32);
+var material = new THREE.MeshLambertMaterial({color: 0x6B5A38});
+
+var plane = new THREE.Mesh(geometry, material);
+plane.position.set(0, -100, 0);
+plane.rotation.set(-Math.PI / 2, 0, 0);
+
+scene.add(plane);</code></pre></div>
+
+<p>The <strong>first two parameters</strong> of the <code>PlaneGeometry()</code> function define the <strong>width</strong> and <strong>height</strong> of the plane. By default, the <strong>plane is vertical and facing the +z direction</strong>. Line 6 above <strong>rotates it by 90 degree</strong> along the x-axis.</p>
+
+<h3 id="toc_7">Desert</h3>
+
+<p>A lot of times, Naruto has to fight in some rural areas, where the floor is not that flat. In this case, we have to replace the <code>PlaneGeometry()</code> with <code>ParametricGeometry()</code>.</p>
+
+<blockquote>
+<p><strong>ParametricGeometry(func, slices, stacks)</strong></p>
+
+<p>func — A function that takes in a <code>u</code> and <code>v</code> value each between 0 and 1 and modifies a third <code>Vector3</code> argument</p>
+
+<p>slices — The count of slices to use for the parametric function </p>
+
+<p>stacks — The count of stacks to use for the parametric function</p>
+</blockquote>
+
+<p>Reference: <a href="https://threejs.org/docs/#api/geometries/ParametricGeometry">https://threejs.org/docs/#api/geometries/ParametricGeometry</a></p>
+
+<p>The last two parameters simply define the complexity of this geometry and could be ignored for now. The first one does deserve more explanation.</p>
+
+<p>Still remember the <code>uv</code> values we discussed in last section? It&#39;s an extra attribute assigned to the mesh vertices. Here, we are going to change the vertex positions based on these <code>uv</code> values.</p>
+
+<p>Time to show off my Maths senses:</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">function func(u, v, target) {
+
+    var x = (u - 0.5) * 2000;
+    var y = (v - 0.5) * 2000;
+    var z = Math.cos(10 * u) * Math.cos(10 * v) * 100;
+
+    target.set(x, y, z);
+
+}</code></pre></div>
+
+<p>Most work is being done in the <strong>z-component</strong>. Remember the <strong>plane is vertical</strong> by default, and thus the variations have to be developed on the <strong>z-component</strong>.</p>
+
+<p>Finally, replace the original <code>PlaneGeometry()</code> with this line.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var geometry = new THREE.ParametricGeometry( func, 32, 32 );</code></pre></div>
+
+<h3 id="toc_8">Kage Bunshin no Jutsu</h3>
+
+<p><img src="https://staticr1.blastingcdn.com/media/photogallery/2016/3/6/660x290/b_620x273/kage-bunshin-no-jutsu-de-naruto_632927.jpg" alt=""></p>
+
+<p>A <strong>clone of Naruto</strong> will be generated and placed on the terrain whenever we click on it. Thus, the first thing is to set up the <strong>click</strong> listener and the corresponding callback function.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var mouse = new THREE.Vector2();
+
+function onDocumentMouseClick(event) {
+
+    event.preventDefault();
+
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+    raycaster = new THREE.Raycaster();
+
+    var vector = new THREE.Vector3(mouse.x, mouse.y, 1).unproject(camera);
+
+    raycaster.set(camera.position, vector.sub(camera.position).normalize());
+
+    var intersects = raycaster.intersectObjects(scene.children);
+
+}
+
+document.addEventListener(&#39;click&#39;, onDocumentMouseClick, false);</code></pre></div>
+
+<p>Nothing new as we have tried it before. Each time when <strong>click</strong> our screen, the <code>onDocumentMouseClick()</code> function will be invoked. This function basically converts the mouse position from <strong>screen coordinates (+y downwards)</strong> to the THREE.js <strong>view coordinates (+y upwards)</strong>. A <strong>virtual ray</strong>, which is <strong>perpendicular to the screen</strong>, is also created from the mouse position and goes towards the <strong>far plane</strong>. This ray may intersect with a number of objects in our scene and those objects are captured in the <code>intersects</code> array.</p>
+
+<p>We&#39;d like to place a new Naruto at the <strong>intersect point</strong>. Thus, append the below to the <code>onDocumentMouseClick()</code> function.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">if (intersects.length &gt; 0) {
+
+    var narutoClone = naruto.clone();
+
+    narutoClone.position.x = intersects[0].point.x;
+    narutoClone.position.y = intersects[0].point.y - 10;
+    narutoClone.position.z = intersects[0].point.z;
+
+    narutoClone.rotation.z = Math.random() - 0.5;
+
+    scene.add(narutoClone);
+}</code></pre></div>
+
+<h3 id="toc_9">Shadow Casting</h3>
+
+<p><img src="https://vignette.wikia.nocookie.net/naruto/images/0/02/Shadow_Imitation_Technique.png/revision/latest/scale-to-width-down/640?cb=20150222031550" alt=""></p>
+
+<p>The scene won&#39;t look realistic if shadow is not rendered. To achieve it, we first have to <strong>enable shadow casting</strong> with </p>
+
+<div><pre class="line-numbers"><code class="language-javascript">renderer.shadowMap.enabled = true;</code></pre></div>
+
+<p>Next, we have to specify which meshes to <strong>cast and receive shadows</strong>. So for all <strong>child meshes</strong> of the Naruto model, we need the following line:</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">child.castShadow = true;</code></pre></div>
+
+<p>The terrain will receive the shadow, thus</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">plane.receiveShadow = true;</code></pre></div>
+
+<p>Finally, we have to specify which light source is casting the shadow:</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">directionalLight.castShadow = true;
+
+directionalLight.shadow.camera.near = 0.5;       // default
+directionalLight.shadow.camera.far = 500;      
+directionalLight.shadow.camera.left = -512;    
+directionalLight.shadow.camera.right = 512;    
+directionalLight.shadow.camera.top = -512;     
+directionalLight.shadow.camera.bottom = 512;   </code></pre></div>
+
+<p>The last six lines <strong>specify a volume where shadow will be calculated and rendered</strong>. Objects outside this volume will not cast or receive shadow.</p>
+
+<p>It&#39;s hard to estimate <strong>appropriate values for the shadow camera</strong>. The following should give us a big hand.</p>
+
+<div><pre class="line-numbers"><code class="language-javascript">var helper = new THREE.CameraHelper(directionalLight.shadow.camera);
+scene.add(helper);</code></pre></div>
+
+
+
+<script type="text/javascript">
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(){var e=/\blang(?:uage)?-(\w+)\b/i,t=0,n=_self.Prism={util:{encode:function(e){return e instanceof a?new a(e.type,n.util.encode(e.content),e.alias):"Array"===n.util.type(e)?e.map(n.util.encode):e.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).match(/\[object (\w+)\]/)[1]},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function(e){var t=n.util.type(e);switch(t){case"Object":var a={};for(var r in e)e.hasOwnProperty(r)&&(a[r]=n.util.clone(e[r]));return a;case"Array":return e.map&&e.map(function(e){return n.util.clone(e)})}return e}},languages:{extend:function(e,t){var a=n.util.clone(n.languages[e]);for(var r in t)a[r]=t[r];return a},insertBefore:function(e,t,a,r){r=r||n.languages;var l=r[e];if(2==arguments.length){a=arguments[1];for(var i in a)a.hasOwnProperty(i)&&(l[i]=a[i]);return l}var o={};for(var s in l)if(l.hasOwnProperty(s)){if(s==t)for(var i in a)a.hasOwnProperty(i)&&(o[i]=a[i]);o[s]=l[s]}return n.languages.DFS(n.languages,function(t,n){n===r[e]&&t!=e&&(this[t]=o)}),r[e]=o},DFS:function(e,t,a,r){r=r||{};for(var l in e)e.hasOwnProperty(l)&&(t.call(e,l,e[l],a||l),"Object"!==n.util.type(e[l])||r[n.util.objId(e[l])]?"Array"!==n.util.type(e[l])||r[n.util.objId(e[l])]||(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,l,r)):(r[n.util.objId(e[l])]=!0,n.languages.DFS(e[l],t,null,r)))}},plugins:{},highlightAll:function(e,t){var a={callback:t,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};n.hooks.run("before-highlightall",a);for(var r,l=a.elements||document.querySelectorAll(a.selector),i=0;r=l[i++];)n.highlightElement(r,e===!0,a.callback)},highlightElement:function(t,a,r){for(var l,i,o=t;o&&!e.test(o.className);)o=o.parentNode;o&&(l=(o.className.match(e)||[,""])[1],i=n.languages[l]),t.className=t.className.replace(e,"").replace(/\s+/g," ")+" language-"+l,o=t.parentNode,/pre/i.test(o.nodeName)&&(o.className=o.className.replace(e,"").replace(/\s+/g," ")+" language-"+l);var s=t.textContent,u={element:t,language:l,grammar:i,code:s};if(!s||!i)return n.hooks.run("complete",u),void 0;if(n.hooks.run("before-highlight",u),a&&_self.Worker){var c=new Worker(n.filename);c.onmessage=function(e){u.highlightedCode=e.data,n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(u.element),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},c.postMessage(JSON.stringify({language:u.language,code:u.code,immediateClose:!0}))}else u.highlightedCode=n.highlight(u.code,u.grammar,u.language),n.hooks.run("before-insert",u),u.element.innerHTML=u.highlightedCode,r&&r.call(t),n.hooks.run("after-highlight",u),n.hooks.run("complete",u)},highlight:function(e,t,r){var l=n.tokenize(e,t);return a.stringify(n.util.encode(l),r)},tokenize:function(e,t){var a=n.Token,r=[e],l=t.rest;if(l){for(var i in l)t[i]=l[i];delete t.rest}e:for(var i in t)if(t.hasOwnProperty(i)&&t[i]){var o=t[i];o="Array"===n.util.type(o)?o:[o];for(var s=0;s<o.length;++s){var u=o[s],c=u.inside,g=!!u.lookbehind,h=!!u.greedy,f=0,d=u.alias;u=u.pattern||u;for(var p=0;p<r.length;p++){var m=r[p];if(r.length>e.length)break e;if(!(m instanceof a)){u.lastIndex=0;var y=u.exec(m),v=1;if(!y&&h&&p!=r.length-1){var b=r[p+1].matchedStr||r[p+1],k=m+b;if(p<r.length-2&&(k+=r[p+2].matchedStr||r[p+2]),u.lastIndex=0,y=u.exec(k),!y)continue;var w=y.index+(g?y[1].length:0);if(w>=m.length)continue;var _=y.index+y[0].length,P=m.length+b.length;if(v=3,P>=_){if(r[p+1].greedy)continue;v=2,k=k.slice(0,P)}m=k}if(y){g&&(f=y[1].length);var w=y.index+f,y=y[0].slice(f),_=w+y.length,S=m.slice(0,w),O=m.slice(_),j=[p,v];S&&j.push(S);var A=new a(i,c?n.tokenize(y,c):y,d,y,h);j.push(A),O&&j.push(O),Array.prototype.splice.apply(r,j)}}}}}return r},hooks:{all:{},add:function(e,t){var a=n.hooks.all;a[e]=a[e]||[],a[e].push(t)},run:function(e,t){var a=n.hooks.all[e];if(a&&a.length)for(var r,l=0;r=a[l++];)r(t)}}},a=n.Token=function(e,t,n,a,r){this.type=e,this.content=t,this.alias=n,this.matchedStr=a||null,this.greedy=!!r};if(a.stringify=function(e,t,r){if("string"==typeof e)return e;if("Array"===n.util.type(e))return e.map(function(n){return a.stringify(n,t,e)}).join("");var l={type:e.type,content:a.stringify(e.content,t,r),tag:"span",classes:["token",e.type],attributes:{},language:t,parent:r};if("comment"==l.type&&(l.attributes.spellcheck="true"),e.alias){var i="Array"===n.util.type(e.alias)?e.alias:[e.alias];Array.prototype.push.apply(l.classes,i)}n.hooks.run("wrap",l);var o="";for(var s in l.attributes)o+=(o?" ":"")+s+'="'+(l.attributes[s]||"")+'"';return"<"+l.tag+' class="'+l.classes.join(" ")+'" '+o+">"+l.content+"</"+l.tag+">"},!_self.document)return _self.addEventListener?(_self.addEventListener("message",function(e){var t=JSON.parse(e.data),a=t.language,r=t.code,l=t.immediateClose;_self.postMessage(n.highlight(r,n.languages[a],a)),l&&_self.close()},!1),_self.Prism):_self.Prism;var r=document.currentScript||[].slice.call(document.getElementsByTagName("script")).pop();return r&&(n.filename=r.src,document.addEventListener&&!r.hasAttribute("data-manual")&&document.addEventListener("DOMContentLoaded",n.highlightAll)),_self.Prism}();"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+</script>
+
+<script type="text/javascript">
+Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\w\W]*?\*\//,lookbehind:!0},{pattern:/(^|[^\\:])\/\/.*/,lookbehind:!0}],string:{pattern:/(["'])(\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,greedy:!0},"class-name":{pattern:/((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[a-z0-9_\.\\]+/i,lookbehind:!0,inside:{punctuation:/(\.|\\)/}},keyword:/\b(if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,"boolean":/\b(true|false)\b/,"function":/[a-z0-9_]+(?=\()/i,number:/\b-?(?:0x[\da-f]+|\d*\.?\d+(?:e[+-]?\d+)?)\b/i,operator:/--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,punctuation:/[{}[\];(),.:]/};
+</script>
+
+<script type="text/javascript">
+Prism.languages.javascript=Prism.languages.extend("clike",{keyword:/\b(as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,number:/\b-?(0x[\dA-Fa-f]+|0b[01]+|0o[0-7]+|\d*\.?\d+([Ee][+-]?\d+)?|NaN|Infinity)\b/,"function":/[_$a-zA-Z\xA0-\uFFFF][_$a-zA-Z0-9\xA0-\uFFFF]*(?=\()/i}),Prism.languages.insertBefore("javascript","keyword",{regex:{pattern:/(^|[^\/])\/(?!\/)(\[.+?]|\\.|[^\/\\\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})]))/,lookbehind:!0,greedy:!0}}),Prism.languages.insertBefore("javascript","class-name",{"template-string":{pattern:/`(?:\\\\|\\?[^\\])*?`/,greedy:!0,inside:{interpolation:{pattern:/\$\{[^}]+\}/,inside:{"interpolation-punctuation":{pattern:/^\$\{|\}$/,alias:"punctuation"},rest:Prism.languages.javascript}},string:/[\s\S]+/}}}),Prism.languages.markup&&Prism.languages.insertBefore("markup","tag",{script:{pattern:/(<script[\w\W]*?>)[\w\W]*?(?=<\/script>)/i,lookbehind:!0,inside:Prism.languages.javascript,alias:"language-javascript"}}),Prism.languages.js=Prism.languages.javascript;
+</script>
+
+<script type="text/javascript">
+Prism.languages.glsl=Prism.languages.extend("clike",{comment:[/\/\*[\w\W]*?\*\//,/\/\/(?:\\(?:\r\n|[\s\S])|.)*/],number:/\b(?:0x[\da-f]+|(?:\.\d+|\d+\.?\d*)(?:e[+-]?\d+)?)[ulf]*\b/i,keyword:/\b(?:attribute|const|uniform|varying|buffer|shared|coherent|volatile|restrict|readonly|writeonly|atomic_uint|layout|centroid|flat|smooth|noperspective|patch|sample|break|continue|do|for|while|switch|case|default|if|else|subroutine|in|out|inout|float|double|int|void|bool|true|false|invariant|precise|discard|return|d?mat[234](?:x[234])?|[ibdu]?vec[234]|uint|lowp|mediump|highp|precision|[iu]?sampler[123]D|[iu]?samplerCube|sampler[12]DShadow|samplerCubeShadow|[iu]?sampler[12]DArray|sampler[12]DArrayShadow|[iu]?sampler2DRect|sampler2DRectShadow|[iu]?samplerBuffer|[iu]?sampler2DMS(?:Array)?|[iu]?samplerCubeArray|samplerCubeArrayShadow|[iu]?image[123]D|[iu]?image2DRect|[iu]?imageCube|[iu]?imageBuffer|[iu]?image[12]DArray|[iu]?imageCubeArray|[iu]?image2DMS(?:Array)?|struct|common|partition|active|asm|class|union|enum|typedef|template|this|resource|goto|inline|noinline|public|static|extern|external|interface|long|short|half|fixed|unsigned|superp|input|output|hvec[234]|fvec[234]|sampler3DRect|filter|sizeof|cast|namespace|using)\b/}),Prism.languages.insertBefore("glsl","comment",{preprocessor:{pattern:/(^[ \t]*)#(?:(?:define|undef|if|ifdef|ifndef|else|elif|endif|error|pragma|extension|version|line)\b)?/m,lookbehind:!0,alias:"builtin"}});
+</script>
+
+<script type="text/javascript">
+!function(){"undefined"!=typeof self&&self.Prism&&self.document&&Prism.hooks.add("complete",function(e){if(e.code){var t=e.element.parentNode,s=/\s*\bline-numbers\b\s*/;if(t&&/pre/i.test(t.nodeName)&&(s.test(t.className)||s.test(e.element.className))&&!e.element.querySelector(".line-numbers-rows")){s.test(e.element.className)&&(e.element.className=e.element.className.replace(s,"")),s.test(t.className)||(t.className+=" line-numbers");var n,a=e.code.match(/\n(?!$)/g),l=a?a.length+1:1,m=new Array(l+1);m=m.join("<span></span>"),n=document.createElement("span"),n.className="line-numbers-rows",n.innerHTML=m,t.hasAttribute("data-start")&&(t.style.counterReset="linenumber "+(parseInt(t.getAttribute("data-start"),10)-1)),e.element.appendChild(n)}}})}();
+</script>
+
+<script type="text/x-mathjax-config">
+(function () {
+
+MathJax.Hub.Config({
+	'showProcessingMessages': false,
+	'messageStyle': 'none'
+});
+
+if (typeof MathJaxListener !== 'undefined') {
+	MathJax.Hub.Register.StartupHook('End', function () {
+		MathJaxListener.invokeCallbackForKey_('End');
+	});
+}
+
+})();
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+</body>
+
+</html>
