@@ -52,6 +52,7 @@ Just a good Integrated Development Environment (IDE), this workshop recommends M
  
 ###  Before we start...
 As we will be building a web-based VR application in this course, it would be nice for you to pick up some brief knowledge on web development, like HTML and JavaScript.
+
 Please complete the two worksheets as shown below.
 #### [Worksheet 0.1 - Web basics](WS%200.1%20-%20Web%20basics.html)
 #### [Worksheet 0.2 - JavaScript](WS%200.2%20-%20JavaScript.html)
